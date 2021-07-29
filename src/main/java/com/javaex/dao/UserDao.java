@@ -6,30 +6,46 @@ import org.springframework.stereotype.Repository;
 
 import com.javaex.vo.UserVo;
 
-
 @Repository
 public class UserDao {
-	
-	//field
+
+	// field
 	@Autowired
 	private SqlSession sqlSession;
-	
-	//constructor
-	
-	//method g/s
-	
-	//method general
+
+	// constructor
+
+	// method g/s
+
+	// method general
 	public UserVo selectUser(UserVo userVo) {
-		
-		
+
 		System.out.println("[UserDao.selectUser]");
-		
+
 		System.out.println(userVo);
+
+		return sqlSession.selectOne("user.selectUser", userVo);
+	}
+
+	public int insertUser(UserVo userVo) {
+
+		System.out.println("[UserDao.insertUser");
+
+		System.out.println(userVo);
+
+		return sqlSession.insert("user.insertUser", userVo);
+	}
+	
+	
+	public UserVo selectModifyUser(int no ) {
+		System.out.println("[UserDao.selectModifyUser]");
 		
-		UserVo authUser = sqlSession.selectOne("user.selectUser",userVo);
+		return sqlSession.selectOne("user.selectModifyUser",no);
+	}
+	
+	public int updateUser(UserVo userVo) {
 		
-		System.out.println(authUser);
 		
-		return authUser;
+		return sqlSession.update("user.updateUser",userVo);
 	}
 }

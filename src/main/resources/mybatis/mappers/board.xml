@@ -1,0 +1,99 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="board">
+
+	<!-- 조회수 -->
+
+	<update id="updateHit" parameterType="int">
+		
+		<![CDATA[
+		update board set
+		hit = hit+1
+		where no = #{no}
+		
+		]]>
+
+	</update>
+
+	<!-- getboard -->
+	<select id="selectBoard" parameterType="int"
+		resultType="com.javaex.vo.BoardVo">
+		<![CDATA[
+		select b.no,
+			   b.title,
+			   b.content,
+			   b.hit,
+			   b.reg_date regDate,
+			   b.user_no userNo,
+			   u.name
+		from   board b , users u
+		where b.user_no = u.no
+		and b.no = #{no}
+		
+		]]>
+
+
+	</select>
+
+	<!-- 리스트+검색 -->
+	<select id="selectList" parameterType="string"
+		resultType="com.javaex.vo.BoardVo">
+		<![CDATA[
+			select b.no, 
+				   b.title, 
+				   b.hit, 
+				   b.reg_date regDate, 
+				   b.user_no userNo, 
+				   u.name name
+		     from board b, users u
+		     where b.user_no = u.no
+		 ]]>
+
+		<if test="value != null and value !=''">
+			and title like '%'|| #{keyword} ||'%'
+		</if>
+		<![CDATA[
+        	 order by no desc
+		 ]]>
+
+	</select>
+
+	<!-- 수정 -->
+	<update id="updateBoard" parameterType="com.javaex.vo.BoardVo">
+		<![CDATA[
+		
+			update board set
+		   	title = #{title },
+		    content = #{content }
+		 	where no=#{no }
+		 	
+		]]>
+
+	</update>
+
+	<!-- 추가 -->
+	<insert id="insertBoard" parameterType="com.javaex.vo.BoardVo">
+		<![CDATA[
+			insert into board 
+			values ( seq_board_no.nextval, 
+					 #{title}, 
+					 #{content}, 
+					 0, 
+					 sysdate, 
+					 #{userNo} )
+		]]>
+	</insert>
+
+	<!-- 삭제 -->
+
+	<delete id="deleteBoard" parameterType="com.javaex.vo.BoardVo">
+	
+		<![CDATA[
+			delete from board 
+			where no = #{no}
+			and user_no = #{userNo}
+			
+		]]>
+
+	</delete>
+</mapper>
