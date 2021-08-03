@@ -90,8 +90,8 @@
 	
 		<![CDATA[
 			delete from board 
-			where no = #{no}
-			and user_no = #{userNo}
+			where no = #{no }
+			and user_no = #{userNo }
 			
 		]]>
 
