@@ -32,7 +32,7 @@
 		parameterType="com.javaex.vo.GuestbookVo">
 		<![CDATA[
 			delete from guestbook 
-			where no= #{no} 
+			where no= #{no}
 			and password= #{password}
 		]]>
 	</delete>

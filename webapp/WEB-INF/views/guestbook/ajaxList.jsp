@@ -7,6 +7,9 @@
 <meta charset="UTF-8">
 <title>Insert title here</title>
 
+<link href="${pageContext.request.contextPath }/assets/bootstrap/css/bootstrap.css" rel="stylesheet"
+	type="text/css"
+>
 <link href="${pageContext.request.contextPath }/assets/css/mysite.css" rel="stylesheet"
 	type="text/css"
 >
@@ -16,6 +19,10 @@
 
 <script type="text/javascript"
 	src="${pageContext.request.contextPath }/assets/js/jquery/jquery-1.12.4.js"
+></script>
+
+<script type="text/javascript"
+	src="${pageContext.request.contextPath }/assets/bootstrap/js/bootstrap.js"
 ></script>
 
 
@@ -104,6 +111,39 @@
 	</div>
 	<!-- //wrap -->
 
+
+
+
+	<!--                                Delete Modal                                        -->
+	<div id="delModal" class="modal fade">
+		<div class="modal-dialog">
+			<div class="modal-content">
+				<div class="modal-header">
+					<button type="button" class="close" data-dismiss="modal" aria-label="Close">
+						<span aria-hidden="true">&times;</span>
+					</button>
+					<h4 class="modal-title">방명록 삭제</h4>
+				</div>
+				<div class="modal-body">
+					<label for="modalPassword">비밀번호</label> <input id="modalPassword" type="password"
+						name="password" value=""
+					> <input type="hidden" name="no" value="">
+				</div>
+				<div class="modal-footer">
+					<button id="modalBtnDel" type="button" class="btn btn-primary">삭제</button>
+				</div>
+			</div>
+			<!-- /.modal-content -->
+		</div>
+		<!-- /.modal-dialog -->
+	</div>
+	<!-- /.modal -->
+	<!--                                Delete Modal                                        -->
+
+
+
+
+
 </body>
 
 <script type="text/javascript">
@@ -127,7 +167,7 @@
 				//화면에 그리기
 				for (var i = 0; i < guestList.length; i++) {
 
-					render(guestList[i],"down"); //list draw
+					render(guestList[i], "down"); //list draw
 
 				}
 
@@ -158,18 +198,65 @@
 			content : $("[name='content']").val()
 		};
 
+		fetchList();
+
+	});
+
+	/* Delete Guestbook */
+
+	$("#listArea").on("click", ".btnDel", function() {
+		console.log("btnDel clicked")
+
+		//hidden no input
+		var no = $(this).data("no"); // data-no 읽어오기
+
+		$("[name='no']").val(no);
+
+		//reset password value
+		$("#modalPassword").val("");
+
+		//modal
+		$("#delModal").modal();
+	});
+	/* Delete Guestbook */
+
+	$("#modalBtnDel").on("click", function() {
+		console.log("modalBtnDel clicked")
+
+		var no = $("[name='no']").val();
+
+		var guestbookVo = {
+			no : $("[name='no']").val(),
+			password : $("[name='password']").val()
+
+		};
+		console.log(guestbookVo);
+
+		//request delete to server (param no,password)
 		$.ajax({
-			//url : "${pageContext.request.contextPath }/api/guestbook/write?name="+userName+"&password="+userPassword+"&content="+userContent,
-			url : "${pageContext.request.contextPath }/api/guestbook/write",
-			type : "get",
+			
+			//request
+			url : "${pageContext.request.contextPath }/api/guestbook/remove",
+			type : "post",
 			//contentType : "application/json",
-			//data : {name: userName,password: userPassword,content: userContent},
 			data : guestbookVo,
-			//dataType : "json",
-			success : function(guestbookVo) {
-				/*성공시 처리해야될 코드 작성*/
-				console.log(guestbookVo);
-				render(guestbookVo,"up")
+			
+			
+			//response
+			dataType : "json",
+			success : function(count) {
+
+				if (count === 1) {
+					//close modal
+					$("#delModal").modal("hide");
+
+					//guestbook remove on html
+					$("#t-" + no).remove();
+				} else {
+
+					//close modal
+					$("#delModal").modal("hide");
+				}
 
 			},
 			error : function(XHR, status, error) {
@@ -178,10 +265,38 @@
 		});
 
 	});
+	
+	
+	function fetchList(){
+		$.ajax({
+
+			url : "${pageContext.request.contextPath }/api/guestbook/list",
+			type : "post",
+			//contentType : "application/json",
+			//data : {name: ”홍길동"},
+
+			//dataType : "json",
+			success : function(guestList) {
+				/*성공시 처리해야될 코드 작성*/
+				console.log(guestList);
+
+				//화면에 그리기
+				for (var i = 0; i < guestList.length; i++) {
+
+					render(guestList[i], "down"); //list draw
+
+				}
+
+			},
+			error : function(XHR, status, error) {
+				console.error(status + " : " + error);
+			}
+		});
+	};
 
 	function render(guestVo, type) {
 		var str = "";
-		str += '<table class="guestRead">';
+		str += '<table id="t-'+ guestVo.no +'" class="guestRead">';
 		str += '   <colgroup>';
 		str += '      <col style="width: 10%;">';
 		str += '      <col style="width: 40%;">';
@@ -192,7 +307,7 @@
 		str += '      <td>' + guestVo.no + '</td> ';
 		str += '      <td>' + guestVo.name + '</td>';
 		str += '      <td>' + guestVo.regDate + '</td>';
-		str += '      <td><a href="">[삭제]</a></td>';
+		str += '      <td><button class="btnDel" data-no="' + guestVo.no + '">[삭제]</button></td>';
 		str += '   </tr> ';
 		str += '   <tr> ';
 		str += '      <td colspan=4 class="text-left">' + guestVo.content

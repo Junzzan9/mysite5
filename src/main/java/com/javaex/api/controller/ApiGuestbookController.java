@@ -13,13 +13,14 @@ import com.javaex.service.GuestbookService;
 import com.javaex.vo.GuestbookVo;
 
 @Controller
+@RequestMapping(value="/api/guestbook")
 public class ApiGuestbookController {
 
 	@Autowired
 	private GuestbookService guestbookService;
 	
 	@ResponseBody
-	@RequestMapping(value = "/api/guestbook/list", method = { RequestMethod.GET, RequestMethod.POST })
+	@RequestMapping(value = "/list", method = { RequestMethod.GET, RequestMethod.POST })
 	public List<GuestbookVo> List() {
 		System.out.println("[ApiGuestbookController.List]");
 
@@ -29,17 +30,34 @@ public class ApiGuestbookController {
 		return guestbookList;
 	}
 	
+	
+	//ajax add guestbook
 	@ResponseBody
-	@RequestMapping(value = "/api/guestbook/write", method = { RequestMethod.GET, RequestMethod.POST })
+	@RequestMapping(value = "/write", method = { RequestMethod.GET, RequestMethod.POST })
 	public GuestbookVo write(@ModelAttribute GuestbookVo guestbookVo) {
 		System.out.println("[ApiGuestbookController.write]");
 		
 		System.out.println(guestbookVo);
 		
 		GuestbookVo resultVo = guestbookService.writeResultVo(guestbookVo);
-		System.out.println("controller"+resultVo);
+		System.out.println("controller  -"+resultVo);
+		
 		return resultVo;
 	}
+	
+	//ajax remove
+	@ResponseBody
+	@RequestMapping(value = "/remove", method = { RequestMethod.GET, RequestMethod.POST })
+	public int remove(@ModelAttribute GuestbookVo guestbookVo) {
+		System.out.println("[ApiGuestbookController.remove]");
+		
+		System.out.println(guestbookVo);
+		
+		int count = guestbookService.removeGuest(guestbookVo);
+		
+		return count;
+	}
+	
 	
 	
 }
