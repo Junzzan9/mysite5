@@ -29,6 +29,27 @@
 		]]>
 
 	</select>
+	
+	<select id="selectidcheck" parameterType="UserVo" resultType="UserVo">
+		<![CDATA[
+			select no
+			from users
+			where id =  #{id}
+		
+		]]>
+
+	</select>
+	
+	<select id="selectUserById" parameterType="String" resultType="UserVo">
+		<![CDATA[
+			select no,
+				   id
+			from users
+			where id =  #{id}
+		
+		]]>
+
+	</select>
 
 	<insert id="insertUser" parameterType="UserVo">
 		<![CDATA[

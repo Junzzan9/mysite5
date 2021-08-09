@@ -273,7 +273,7 @@
 			url : "${pageContext.request.contextPath }/api/guestbook/list",
 			type : "post",
 			//contentType : "application/json",
-			//data : {name: ”홍길동"},
+			//data : {name: "홍길동"},
 
 			//dataType : "json",
 			success : function(guestList) {

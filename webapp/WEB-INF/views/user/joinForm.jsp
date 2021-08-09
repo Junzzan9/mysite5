@@ -13,7 +13,9 @@
 <link href="${pageContext.request.contextPath }/assets/css/user.css" rel="stylesheet"
 	type="text/css"
 >
-
+<script type="text/javascript"
+	src="${pageContext.request.contextPath }/assets/js/jquery/jquery-1.12.4.js"
+></script>
 </head>
 
 <body>
@@ -47,15 +49,16 @@
 				<!-- //content-head -->
 
 				<div id="user">
-					<div id="joinForm">
-						<form action="${pageContext.request.contextPath}/user/joinOk" method="post">
+					<div>
+						<form id="joinForm" action="${pageContext.request.contextPath}/user/joinOk" method="post">
 
 							<!-- 아이디 -->
 							<div class="form-group">
 								<label class="form-text" for="input-uid">아이디</label> <input type="text" id="input-uid"
 									name="id" value="" placeholder="아이디를 입력하세요"
 								>
-								<button type="button" id="">중복체크</button>
+								<button type="button" id="id-check">중복체크</button>
+								<p id="idCheckMsg"></p>
 							</div>
 
 							<!-- 비밀번호 -->
@@ -111,5 +114,119 @@
 	<!-- //wrap -->
 
 </body>
+<script type="text/javascript">
+	
+	//data send for json
+	//form X  --> form처럼사용하기
+	//parameter X --> json
+	
+	$("#btn-submit").on("click",function(){
+		event.preventDefault();
+		console.log("Send data for jason-----------")
+		
+		//data extract
+		var userVo = {
+			id: $("#input-uid").val(),
+			passward: $("#input-pass").val(),
+			name: $("#input-name").val(),
+			gender: $("[name='gender']").val()
+		};
+		console.log( JSON.stringify(userVo));
+		
+		
+		
+		
+		$.ajax({
 
+			//request
+			url : "${pageContext.request.contextPath }/user/join2",
+			type : "post",
+			contentType : "application/json",
+			data : JSON.stringify(userVo),             //js object-->json object
+
+			//response
+			dataType : "json",
+			success : function(count) {
+				console.log(count);
+
+			},
+			error : function(XHR, status, error) {
+				console.error(status + " : " + error);
+			}
+		});
+
+	window.location.href = '${pageContext.request.contextPath }/user/joinOk';
+
+	});
+
+	//form - submit clicked
+
+	/*
+	$("#joinForm").on("submit", function() {
+		console.log("submit clicked");
+		//if  true == submit
+		//else  flase == stop
+
+		//password over 8crt check
+
+		var password = $("#input-pass").val();
+		if (password.length < 8) {
+			alert("패스워드를 8글자 이상 입력해주세요.");
+			return false;
+		}
+		var name = $("#input-name").val();
+		if (name.length < 1) {
+			alert("이름을 입력해주세요.");
+			return false;
+		}
+		var id = $("#input-uid").val();
+		if (id.length < 1) {
+			alert("ID를 입력해주세요.");
+			return false;
+		}
+		 
+		var agree = $("#chk-agree").is(":checked");
+		if (agree == false) {
+			alert("약관에 동의해주세요.");
+			return false;
+		}
+		
+
+		return true;
+	})
+	 */
+
+	$("#id-check").on("click", function() {
+		console.log("id-check clicked")
+		event.preventDefault();
+		var id = $("#input-uid").val();
+
+		$.ajax({
+
+			//request
+			url : "${pageContext.request.contextPath }/user/idcheck",
+			type : "post",
+			//contentType : "application/json",
+			data : {
+				id : id
+			},
+
+			//response
+			dataType : "json",
+			success : function(idcheck) {
+				console.log(idcheck);
+				if (idcheck === true) {
+					$("#idCheckMsg").html("사용가능한 ID입니다.")
+				} else {
+					$("#idCheckMsg").html("이미 사용중인 아이디입니다.")
+				}
+
+			},
+			error : function(XHR, status, error) {
+				console.error(status + " : " + error);
+			}
+		});
+
+	});
+</script>
 </html>

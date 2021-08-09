@@ -2,6 +2,68 @@
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="board">
 
+	
+	<!-- GetTotalCount -->
+	
+	<select id="selectTotalCnt" parameterType="String" resultType="int">
+		<![CDATA[
+		select count(*)
+		from board b, users u
+		where b.user_no = u.no
+		]]>	
+		<if test="_parameter != null and _parameter !=''">
+		and b.title like '%'|| #{keyword} ||'%'
+		</if>
+	
+	</select>
+	
+	
+	
+	<select id="selectList2" parameterType="map" resultType="com.javaex.vo.BoardVo">
+		<![CDATA[
+			select  rt.rn,
+			        rt.no,
+			        rt.title,
+			        rt.hit,
+			        rt.regdate,
+			        rt.userno,
+			        rt.name
+			from (select    rownum rn,
+			                ot.no,
+			                ot.title,
+			                ot.hit,
+			                ot.regDate,
+			                ot.userNo,
+			                ot.name
+			      from 		 ( select  	b.no, 
+			                            b.title, 
+			                            b.hit, 
+			                            b.reg_date regDate, 
+			                            b.user_no userNo, 
+			                            u.name name
+				                from board b, users u
+				                where b.user_no = u.no
+				                 ]]>
+								<if test="keyword != null and keyword !=''">
+								and b.title like '%'|| #{keyword} ||'%'
+								</if>
+								<![CDATA[
+				                order by b.no desc ) ot) rt
+								where rn>= #{startRnum}
+								and rn<= #{endRnum}
+								]]>
+		
+			
+
+
+	</select>
+
+
+
+
+
+
+
 	<!-- 조회수 -->
 
 	<update id="updateHit" parameterType="int">
@@ -53,7 +115,7 @@
 			and title like '%'|| #{keyword} ||'%'
 		</if>
 		<![CDATA[
-        	 order by no desc
+        	 order by b.no desc
 		 ]]>
 
 	</select>

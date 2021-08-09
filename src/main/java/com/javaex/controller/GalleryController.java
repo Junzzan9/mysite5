@@ -31,8 +31,9 @@ public class GalleryController {
 	
 	@RequestMapping(value="/write", method={RequestMethod.GET,RequestMethod.POST})
 	public String writeGallery(@RequestParam("file") MultipartFile file,HttpSession session,@ModelAttribute GalleryVo galleryVo) {
-		
+		System.out.println("컨트롤러 와써용");
 		UserVo authUser = (UserVo)session.getAttribute("authUser");
+		System.out.println(authUser);
 		galleryVo.setUserNo(authUser.getNo());
 		
 		galleryService.writeGallery(galleryVo, file);

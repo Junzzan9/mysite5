@@ -20,11 +20,21 @@ public class UserDao {
 	// method general
 	public UserVo selectUser(UserVo userVo) {
 
-		System.out.println("[UserDao.selectUser]");
+		System.out.println("[UserDao.selectUser]        "+userVo);
 
-		System.out.println(userVo);
+		if (userVo.getpassward()==null||userVo.getpassward().equals("")) {
+			userVo = sqlSession.selectOne("user.selectidcheck", userVo);
+			System.out.println(userVo);
+		} else {
+			userVo = sqlSession.selectOne("user.selectUser", userVo);
+			System.out.println(userVo);
+		}
+		return userVo;
 
-		return sqlSession.selectOne("user.selectUser", userVo);
+	}
+	
+	public UserVo selectUser(String id) {
+		return sqlSession.selectOne("user.selectUserById", id);
 	}
 
 	public int insertUser(UserVo userVo) {
@@ -35,17 +45,15 @@ public class UserDao {
 
 		return sqlSession.insert("user.insertUser", userVo);
 	}
-	
-	
-	public UserVo selectModifyUser(int no ) {
+
+	public UserVo selectModifyUser(int no) {
 		System.out.println("[UserDao.selectModifyUser]");
-		
-		return sqlSession.selectOne("user.selectModifyUser",no);
+
+		return sqlSession.selectOne("user.selectModifyUser", no);
 	}
-	
+
 	public int updateUser(UserVo userVo) {
-		
-		
-		return sqlSession.update("user.updateUser",userVo);
+
+		return sqlSession.update("user.updateUser", userVo);
 	}
 }

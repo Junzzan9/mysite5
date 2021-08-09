@@ -20,7 +20,7 @@ public class GalleryService {
 	private GalleryDao galleryDao;
 
 	public GalleryVo writeGallery(GalleryVo galleryVo, MultipartFile file) {
-		
+		System.out.println("서비쓰 와서용");
 		String saveDir = "C:\\javaStudy\\upload";
 		
 		// original name

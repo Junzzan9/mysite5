@@ -8,13 +8,23 @@
 <meta charset="UTF-8">
 <title>Insert title here</title>
 
-<link href="${pageContext.request.contextPath }/assets/css/mysite.css" rel="stylesheet" type="text/css">
-<link href="${pageContext.request.contextPath }/assets/css/gallery.css" rel="stylesheet" type="text/css">
-<link href="${pageContext.request.contextPath }/assets/bootstrap/css/bootstrap.css" rel="stylesheet" type="text/css">
+<link href="${pageContext.request.contextPath }/assets/css/mysite.css" rel="stylesheet"
+	type="text/css"
+>
+<link href="${pageContext.request.contextPath }/assets/css/gallery.css" rel="stylesheet"
+	type="text/css"
+>
+<link href="${pageContext.request.contextPath }/assets/bootstrap/css/bootstrap.css" rel="stylesheet"
+	type="text/css"
+>
 
 
-<script type="text/javascript" src="${pageContext.request.contextPath }/assets/js/jquery/jquery-1.12.4.js"></script>
-<script type="text/javascript" src="${pageContext.request.contextPath }/assets/bootstrap/js/bootstrap.js"></script>
+<script type="text/javascript"
+	src="${pageContext.request.contextPath }/assets/js/jquery/jquery-1.12.4.js"
+></script>
+<script type="text/javascript"
+	src="${pageContext.request.contextPath }/assets/bootstrap/js/bootstrap.js"
+></script>
 
 </head>
 
@@ -67,7 +77,7 @@
 								</div>
 							</li>
 							<!-- 이미지반복영역 -->
-							
+
 							<!-- 이미지반복영역 -->
 							<li>
 								<div class="view">
@@ -78,7 +88,7 @@
 								</div>
 							</li>
 							<!-- 이미지반복영역 -->
-							
+
 							<!-- 이미지반복영역 -->
 							<li>
 								<div class="view">
@@ -89,8 +99,8 @@
 								</div>
 							</li>
 							<!-- 이미지반복영역 -->
-							
-							
+
+
 							<!-- 이미지반복영역 -->
 							<li>
 								<div class="view">
@@ -101,7 +111,7 @@
 								</div>
 							</li>
 							<!-- 이미지반복영역 -->
-							
+
 							<!-- 이미지반복영역 -->
 							<li>
 								<div class="view">
@@ -112,7 +122,7 @@
 								</div>
 							</li>
 							<!-- 이미지반복영역 -->
-							
+
 							<!-- 이미지반복영역 -->
 							<li>
 								<div class="view">
@@ -163,13 +173,15 @@
 					<h4 class="modal-title">이미지등록</h4>
 				</div>
 
-				<form method="post" action="/gallery/write">
+				<form method="post" action="${pageContext.request.contextPath }/gallery/write"
+					enctype="multipart/form-data"
+				>
 					<div class="modal-body">
 						<div class="form-group">
-							<label class="form-text">글작성</label> <input id="addModalContent" type="text" name="" value="">
+							<label class="form-text">글작성</label> <input id="addModalContent" type="text" name="content" value="">
 						</div>
 						<div class="form-group">
-							<label class="form-text">이미지선택</label> <input id="file" type="file" name="" value="">
+							<label class="form-text">이미지선택</label> <input id="file" type="file" name="file" value="">
 						</div>
 					</div>
 					<div class="modal-footer">
@@ -228,13 +240,12 @@
 
 </body>
 <script type="text/javascript">
-	
-	$("#btnImgUpload").on("click",function(){
-		
-		#("#addModal").modal();
+	$("#btnImgUpload").on("click", function() {
+		console.log("이미지올리기 모달창 클릭버튼");
+
+		//모달창 보이기
+		$("#addModal").modal();
 	});
-
-
 </script>
 
 </html>

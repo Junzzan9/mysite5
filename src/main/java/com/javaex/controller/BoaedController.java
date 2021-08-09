@@ -1,6 +1,7 @@
 package com.javaex.controller;
 
 import java.util.List;
+import java.util.Map;
 
 import javax.servlet.http.HttpSession;
 
@@ -22,6 +23,21 @@ public class BoaedController {
 	
 	@Autowired
 	private BoardService boardService;
+	
+	//board paging practice
+	@RequestMapping(value = "/board/list2", method = { RequestMethod.GET, RequestMethod.POST})
+	public String list2(@RequestParam(value = "crtPage", required = false, defaultValue = "1") int crtPage, Model model,@RequestParam(value = "keyword", required = false, defaultValue = "") String keyword) {
+		System.out.println("boardcontroller.list2");
+		System.out.println(crtPage);
+		
+		Map<String,Object> listMap = boardService.getBoardList2(crtPage,keyword);
+		System.out.println(listMap);
+		
+		model.addAttribute("listMap", listMap);
+		
+		return "board/list2";
+	}
+	
 	
 	@RequestMapping (value="/board/read", method={RequestMethod.GET,RequestMethod.POST})
 	public String read(Model model,@RequestParam("no") int no) {

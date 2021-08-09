@@ -16,9 +16,18 @@ public class UserService {
 	public UserVo getUser(UserVo userVo) {
 		System.out.println("[UserService.getUser]");
 
-		UserVo authUser = userDao.selectUser(userVo);
-
-		return authUser;
+		return userDao.selectUser(userVo);
+	}
+	
+	//id check
+	public boolean getUser(String id) {
+		UserVo userVo = userDao.selectUser(id);
+		
+		if (userVo != null) {
+			return false;
+		} else {
+			return true;
+		}
 	}
 
 	// 회원가입 유저 추가
