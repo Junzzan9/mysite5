@@ -5,6 +5,7 @@ import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.ModelAttribute;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.ResponseBody;
@@ -45,6 +46,21 @@ public class ApiGuestbookController {
 		return resultVo;
 	}
 	
+	@ResponseBody
+	@RequestMapping(value = "/write2", method = { RequestMethod.GET, RequestMethod.POST })
+	public GuestbookVo write2(@RequestBody GuestbookVo guestbookVo) {
+		System.out.println("[ApiGuestbookController.write]  "+guestbookVo);
+		
+		System.out.println(guestbookVo);
+		
+		GuestbookVo resultVo = guestbookService.writeResultVo(guestbookVo);
+		System.out.println("controller  -"+resultVo);
+		
+		return resultVo;
+	}
+	
+	
+	
 	//ajax remove
 	@ResponseBody
 	@RequestMapping(value = "/remove", method = { RequestMethod.GET, RequestMethod.POST })
@@ -56,6 +72,18 @@ public class ApiGuestbookController {
 		int count = guestbookService.removeGuest(guestbookVo);
 		
 		return count;
+	}
+	
+	@ResponseBody
+	@RequestMapping(value = "/read", method = { RequestMethod.GET, RequestMethod.POST })
+	public GuestbookVo read(@RequestBody GuestbookVo guestbookVo) {
+		
+		System.out.println(guestbookVo);
+		
+		guestbookVo = guestbookService.readGuestbookVo(guestbookVo);
+		
+		System.out.println(guestbookVo);
+		return guestbookVo;
 	}
 	
 	

@@ -34,20 +34,26 @@ public class GuestbookService {
 
 		return guestbookDao.deleteGuest(guestbookVo);
 	}
-	
-	//ajax guestbook 
+
+	// ajax guestbook
 	public GuestbookVo writeResultVo(GuestbookVo guestbookVo) {
 		System.out.println("[guestbookService.writeResultVo()]");
 
-		//save guestbook
+		// save guestbook
 		System.out.println(guestbookVo);
 		int count = guestbookDao.insertGuestbookKey(guestbookVo);
 		System.out.println(guestbookVo);
-		
-		//load guestbook(recent pk)
+
+		// load guestbook(recent pk)
 		int no = guestbookVo.getNo();
-		
+
 		return guestbookDao.selectGuestbook(no);
 	}
-	
+
+	public GuestbookVo readGuestbookVo(GuestbookVo guestbookVo) {
+		int no = guestbookVo.getNo();
+
+		return guestbookDao.selectGuestbook(no);
+	}
+
 }
